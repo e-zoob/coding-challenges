@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 const (
@@ -27,7 +28,7 @@ func main() {
 			fmt.Println("Error accepting connection:", err)
 			os.Exit(1)
 		}
-		fmt.Println("Clinet connected.")
+		fmt.Println("Client connected.")
 		go handleConnection(conn)
 	}
 }
@@ -39,7 +40,16 @@ func handleConnection(conn net.Conn) {
 		fmt.Println("Error reading:", err)
 	}
 	fmt.Println("Received data:", string(buffer[:mLenght]))
-	_, err = conn.Write([]byte(string(buffer[:mLenght])))
+	request := string(buffer[:mLenght])
+
+	lines := strings.Split(request, "\n")
+	requestLine := lines[0]
+
+	parts := strings.Split(requestLine, " ")
+
+	response := fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nRequested path: %s", parts[1])
+
+	_, err = conn.Write([]byte(response))
 	if err != nil {
 		fmt.Println("Error writing:", err)
 	}
