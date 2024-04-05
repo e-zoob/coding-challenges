@@ -1,4 +1,5 @@
 import argparse
+import funcmodule
 
 parser = argparse.ArgumentParser()
 
@@ -8,4 +9,4 @@ args = parser.parse_args()
 
 file = args.file
 
-print(file)
+funcmodule.CountCharOccurencies(file)
