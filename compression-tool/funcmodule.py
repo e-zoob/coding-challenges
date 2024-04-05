@@ -9,7 +9,8 @@ def CountCharOccurencies(file):
                     if char in char_occurrences:
                         char_occurrences[char] += 1
                     else:
-                        char_occurrences[char] = 1
-        print(char_occurrences)               
+                        char_occurrences[char] = 1             
     except FileNotFoundError:
         print(f"File {file} not found.")
+        
+    return char_occurrences
