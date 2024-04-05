@@ -18,7 +18,7 @@ class HuffInternalNode:
         self.left = lft
         self.right = rgt
         self.weight = wgt
-#create methods to get the left and right children of the node
+
     def get_left(self):
         return self.left
     
