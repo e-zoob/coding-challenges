@@ -1,5 +1,5 @@
 import argparse
-import funcmodule
+import functions_module
 from huff_nodes import HuffLeafNode, HuffInternalNode
 from collections import deque
 # parser = argparse.ArgumentParser()
@@ -10,9 +10,9 @@ from collections import deque
 
 # file = args.file
 
-chars = funcmodule.count_char_occurencies("text.txt")
+chars = functions_module.count_char_occurencies("text.txt")
 
-tree = funcmodule.build_tree(chars)
+tree = functions_module.build_tree(chars)
 
 
 

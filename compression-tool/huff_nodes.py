@@ -51,6 +51,3 @@ class HuffTree:
     
     def __gt__(self, other):
         return self.get_weight() > other.get_weight()
-
-
-
