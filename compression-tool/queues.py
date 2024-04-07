@@ -1,12 +1,14 @@
-from collections import deque
-from heapq import heappop, heappush
+from min_heap import MinHeap
 
-class PriorityQueue:
+class HuffPriorityQueue:
     def __init__(self):
-        self._elements = []
+        self._elements = MinHeap() 
 
-    def enqueue_with_priority(self, value, priority):
-        heappush(self._elements, (priority, value))
+    def enqueue_with_priority(self, value):
+        self._elements.add(value)
     
     def dequeue(self):
-        return heappop(self._elements)
+        return self._elements.poll()
+    
+    def is_empty(self):
+        return self._elements.is_empty()
