@@ -57,7 +57,7 @@ class MinHeap:
             self.__swap(child, parent_index)
             self.__heapify_up(parent_index)
         return self.nodes
-    
+   
     def add(self, item:T):
         self.nodes.append(item)
         self.__heapify_up()
@@ -81,9 +81,8 @@ class MinHeap:
         
         removed_node = self.nodes[0]
         self.nodes[0] = self.nodes[- 1]
-
-        del self.nodes[-1]
         
+        del self.nodes[-1]
         self.__heapify_down()
         
         return removed_node
