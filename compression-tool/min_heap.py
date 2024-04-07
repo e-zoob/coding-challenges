@@ -97,3 +97,10 @@ class MinHeap:
         if self.is_empty():
             return None
         return self.nodes[0]
+    
+    def heapsort_aux(unsorted_input: List[T]) -> List[T]:
+        heap = MinHeap(unsorted_input)
+        sorted_input = []
+        for _ in range(len(heap)):
+            sorted_input.append(heap.poll())
+        return sorted_input
