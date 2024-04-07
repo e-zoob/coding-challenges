@@ -58,12 +58,12 @@ class MinHeap:
             self.__heapify_up(parent_index)
         return self.nodes
     
-    def add(seld, item:T):
-        seld.nodes.append(item)
-        seld.__heapify_up()
+    def add(self, item:T):
+        self.nodes.append(item)
+        self.__heapify_up()
     
     def __heapify_down(self, index: Optional[T] = 0):
-        if index >= len(self.nodes) or not self.__has_left_child(index):
+        if index >= len(self.nodes) or (not self.__has_left_child(index)and not self.__has_right_child(index)):
             return self.nodes
         smaller_child_index = self.__get_left_child_index(index)
         if self.__has_right_child(index) and self.__right_child(index) < self.__left_child(index):
@@ -80,7 +80,7 @@ class MinHeap:
             return None
         
         removed_node = self.nodes[0]
-        self.nodes[0] = self.nodes[:- 1]
+        self.nodes[0] = self.nodes[- 1]
 
         del self.nodes[-1]
         
