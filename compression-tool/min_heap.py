@@ -1,7 +1,5 @@
 from __future__ import annotations
 from typing import List, Optional, TypeVar
-
-
 import sys
 
 T = TypeVar('T')
