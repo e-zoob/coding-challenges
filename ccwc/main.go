@@ -8,10 +8,13 @@ import (
 
 func main() {
 
-	path := os.Args[1]
+	path := os.Args[2]
 
-	size := lib.GetBytes(path)
+	switch flag := os.Args[1]; flag {
+	case "-c":
+		size := lib.GetBytes(path)
+		fmt.Printf("%d %s", size, path)
 
-	fmt.Printf("%d %s", size, path)
+	}
 
 }
