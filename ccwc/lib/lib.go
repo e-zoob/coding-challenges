@@ -10,14 +10,7 @@ import (
 	"unicode/utf8"
 )
 
-func CountBytes(path string) int64 {
-	file, err := os.Open(path)
-
-	if err != nil {
-		fmt.Println("Error opening the file", err)
-		return 0
-	}
-	defer file.Close()
+func CountBytes(file *os.File) int64 {
 
 	fileInfo, err := file.Stat()
 
@@ -30,24 +23,18 @@ func CountBytes(path string) int64 {
 
 }
 
-func CountLines(path string) int {
+func CountLines(file *os.File) int {
 	var count int
-	var read int
+	var err error
 	var target []byte = []byte("\n")
 
-	file, err := os.Open(path)
-
-	if err != nil {
-		fmt.Println("Error opening the file", err)
-		return 0
-	}
-	defer file.Close()
+	file.Seek(0, io.SeekStart)
 
 	buffer := make([]byte, 32*1024)
 	reader := bufio.NewReader(file)
 
 	for {
-		read, err = reader.Read(buffer)
+		read, err := reader.Read(buffer)
 		if err != nil {
 			break
 		}
@@ -59,17 +46,11 @@ func CountLines(path string) int {
 	return count
 }
 
-func CountWords(path string) int {
+func CountWords(file *os.File) int {
 	var count int
+	var err error
 	delim := byte('\n')
-
-	file, err := os.Open(path)
-
-	if err != nil {
-		fmt.Println("Error opening the file", err)
-		return 0
-	}
-	defer file.Close()
+	file.Seek(0, io.SeekStart)
 	reader := bufio.NewReader(file)
 
 	for {
@@ -78,24 +59,19 @@ func CountWords(path string) int {
 			break
 		}
 
-		if err == io.EOF {
-			return count
-		}
 		count += len(strings.Fields(line))
 	}
+	if err == io.EOF {
+		return count
+	}
 	return count
 }
-func CountChars(path string) int {
+
+func CountChars(file *os.File) int {
 	var count int
+	var err error
 	delim := byte('\n')
-
-	file, err := os.Open(path)
-
-	if err != nil {
-		fmt.Println("Error opening the file", err)
-		return 0
-	}
-	defer file.Close()
+	file.Seek(0, io.SeekStart)
 	reader := bufio.NewReader(file)
 
 	for {
@@ -104,18 +80,18 @@ func CountChars(path string) int {
 			break
 		}
 
-		if err == io.EOF {
-			return count
-		}
 		count += utf8.RuneCountInString(line)
+	}
+	if err == io.EOF {
+		return count
 	}
 	return count
 }
 
-func CountAll(path string) (int, int, int) {
-	lines := CountLines(path)
-	words := CountWords(path)
-	chars := CountChars(path)
+func CountAll(file *os.File) (int, int, int) {
+	lines := CountLines(file)
+	words := CountWords(file)
+	chars := CountChars(file)
 
 	return lines, words, chars
 
