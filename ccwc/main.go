@@ -22,7 +22,6 @@ func main() {
 	case "-w":
 		words := lib.CountWords(path)
 		fmt.Printf("%d %s", words, path)
-
 	}
 
 }
