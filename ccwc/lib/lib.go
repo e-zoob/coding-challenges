@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"unicode/utf8"
 )
 
 func CountBytes(path string) int64 {
@@ -83,4 +84,39 @@ func CountWords(path string) int {
 		count += len(strings.Fields(line))
 	}
 	return count
+}
+func CountChars(path string) int {
+	var count int
+	delim := byte('\n')
+
+	file, err := os.Open(path)
+
+	if err != nil {
+		fmt.Println("Error opening the file", err)
+		return 0
+	}
+	defer file.Close()
+	reader := bufio.NewReader(file)
+
+	for {
+		line, err := reader.ReadString(delim)
+		if err != nil {
+			break
+		}
+
+		if err == io.EOF {
+			return count
+		}
+		count += utf8.RuneCountInString(line)
+	}
+	return count
+}
+
+func CountAll(path string) (int, int, int) {
+	lines := CountLines(path)
+	words := CountWords(path)
+	chars := CountChars(path)
+
+	return lines, words, chars
+
 }
