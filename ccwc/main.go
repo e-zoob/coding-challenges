@@ -12,9 +12,12 @@ func main() {
 
 	switch flag := os.Args[1]; flag {
 	case "-c":
-		size := lib.GetBytes(path)
+		size := lib.CountBytes(path)
 		fmt.Printf("%d %s", size, path)
 
+	case "-l":
+		lines := lib.CountLines(path)
+		fmt.Printf("%d %s", lines, path)
 	}
 
 }
