@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 func CountBytes(path string) int64 {
@@ -53,6 +54,33 @@ func CountLines(path string) int {
 	}
 	if err == io.EOF {
 		return count
+	}
+	return count
+}
+
+func CountWords(path string) int {
+	var count int
+	delim := byte('\n')
+
+	file, err := os.Open(path)
+
+	if err != nil {
+		fmt.Println("Error opening the file", err)
+		return 0
+	}
+	defer file.Close()
+	reader := bufio.NewReader(file)
+
+	for {
+		line, err := reader.ReadString(delim)
+		if err != nil {
+			break
+		}
+
+		if err == io.EOF {
+			return count
+		}
+		count += len(strings.Fields(line))
 	}
 	return count
 }
