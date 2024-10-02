@@ -10,10 +10,8 @@ import (
 
 func main() {
 
-	if len(os.Args) < 1 {
-		fmt.Println("USAGE: <program> <flag> <path> OR stdin | <program> <flag> ")
-	}
-	if len(os.Args) == 1 {
+	if len(os.Args) <= 1 {
+		fmt.Println("USAGE: <program> <flag> <path> OR <program> <path> OR stdin | <program> <flag> ")
 	}
 
 	var flag, path string
@@ -28,6 +26,9 @@ func main() {
 		}
 		result := lib.ProcessText(string(readString), os.Args[1])
 		lib.PrintResult(result, "", os.Args[1])
+		return
+	} else if len(os.Args) == 3 && slices.Contains(flags, os.Args[2]) {
+		fmt.Println("USAGE: <program> <flag> <path> OR <program> <path> OR stdin | <program> <flag> ")
 		return
 
 	} else {
