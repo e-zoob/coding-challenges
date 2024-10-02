@@ -4,34 +4,20 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io"
-	"os"
 	"strings"
 	"unicode/utf8"
 )
 
-func CountBytes(file *os.File) int64 {
-
-	fileInfo, err := file.Stat()
-
-	if err != nil {
-		fmt.Println("Error getting file info:", err)
-		return 0
-	}
-
-	return fileInfo.Size()
-
+func CountBytes(text string) int64 {
+	return int64(len(text))
 }
 
-func CountLines(file *os.File) int {
+func CountLines(text string) int {
 	var count int
-	var err error
-	var target []byte = []byte("\n")
+	var target = []byte("\n")
 
-	file.Seek(0, io.SeekStart)
-
+	reader := strings.NewReader(text)
 	buffer := make([]byte, 32*1024)
-	reader := bufio.NewReader(file)
 
 	for {
 		read, err := reader.Read(buffer)
@@ -40,18 +26,13 @@ func CountLines(file *os.File) int {
 		}
 		count += bytes.Count(buffer[:read], target)
 	}
-	if err == io.EOF {
-		return count
-	}
 	return count
 }
 
-func CountWords(file *os.File) int {
+func CountWords(text string) int {
 	var count int
-	var err error
 	delim := byte('\n')
-	file.Seek(0, io.SeekStart)
-	reader := bufio.NewReader(file)
+	reader := bufio.NewReader(strings.NewReader(text))
 
 	for {
 		line, err := reader.ReadString(delim)
@@ -61,18 +42,13 @@ func CountWords(file *os.File) int {
 
 		count += len(strings.Fields(line))
 	}
-	if err == io.EOF {
-		return count
-	}
 	return count
 }
 
-func CountChars(file *os.File) int {
+func CountChars(text string) int {
 	var count int
-	var err error
 	delim := byte('\n')
-	file.Seek(0, io.SeekStart)
-	reader := bufio.NewReader(file)
+	reader := bufio.NewReader(strings.NewReader(text))
 
 	for {
 		line, err := reader.ReadString(delim)
@@ -82,17 +58,48 @@ func CountChars(file *os.File) int {
 
 		count += utf8.RuneCountInString(line)
 	}
-	if err == io.EOF {
-		return count
-	}
 	return count
 }
 
-func CountAll(file *os.File) (int, int, int) {
-	lines := CountLines(file)
-	words := CountWords(file)
-	chars := CountChars(file)
+func CountAll(text string) (int, int, int) {
+	lines := CountLines(text)
+	words := CountWords(text)
+	chars := CountChars(text)
 
 	return lines, words, chars
 
+}
+
+func ProcessText(text string, flag string) map[string]int {
+	result := map[string]int{}
+	switch flag {
+	case "-c":
+		result["bytes"] = int(CountBytes(text))
+	case "-l":
+		result["lines"] = CountLines(text)
+	case "-w":
+		result["words"] = CountWords(text)
+	case "-m":
+		result["chars"] = CountChars(text)
+	default:
+		lines, words, chars := CountAll(text)
+		result["lines"] = lines
+		result["words"] = words
+		result["chars"] = chars
+	}
+	return result
+}
+func PrintResult(result map[string]int, path string, flag string) {
+	switch flag {
+	case "-c":
+		fmt.Printf("%d %s\n", result["bytes"], path)
+	case "-l":
+		fmt.Printf("%d %s\n", result["lines"], path)
+	case "-w":
+		fmt.Printf("%d %s\n", result["words"], path)
+	case "-m":
+		fmt.Printf("%d %s\n", result["chars"], path)
+	default:
+		fmt.Printf("%d %d %d %s\n", result["lines"], result["words"], result["chars"], path)
+	}
 }
