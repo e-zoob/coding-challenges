@@ -26,9 +26,15 @@ func TestCountBytes(t *testing.T) {
 }
 
 func TestCountChars(t *testing.T) {
-	exampleString := "Hello, World! This is a test.\n"
+	exampleString := "Hello, World!\nThis is a test.\n"
 	result := CountChars(exampleString)
 	if result != 30 {
 		t.Errorf("CountChars(%q) returned %d, expected 30", exampleString, result)
+	}
+}
+func TestCountAll(t *testing.T) {
+	exampleString := "Hello, World!\nThis is a test.\n"
+	lines, words, chars := CountAll(exampleString)
+	if lines != 3 && words != 6 && chars != 30 {
 	}
 }
