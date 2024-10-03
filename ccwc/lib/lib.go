@@ -52,11 +52,11 @@ func CountChars(text string) int {
 
 	for {
 		line, err := reader.ReadString(delim)
+		count += utf8.RuneCountInString(line)
 		if err != nil {
 			break
 		}
 
-		count += utf8.RuneCountInString(line)
 	}
 	return count
 }
