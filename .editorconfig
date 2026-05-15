@@ -1,0 +1,24 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.cs]
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_prefer_collection_expression = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+dotnet_diagnostic.CA1852.severity = warning
+dotnet_diagnostic.IDE0055.severity = warning
+
+dotnet_diagnostic.CS8600.severity = error 
+dotnet_diagnostic.CS8601.severity = error 
+dotnet_diagnostic.CS8602.severity = error 
+dotnet_diagnostic.CS8603.severity = error 
+dotnet_diagnostic.CS8604.severity = error
